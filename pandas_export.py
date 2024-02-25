@@ -31,6 +31,6 @@ def run_collatz(x, tests=1): # run the conjecture in a loop
     
     df = DataFrame(export_data)
     df.columns = ['Integer', 'Iterations', 'Raw Data']
-    return df.drop()
+    return df
     
 print(run_collatz(7, 3)) # run the test loop
