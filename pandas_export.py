@@ -1,18 +1,18 @@
+import pandas as pd
 from sys import setrecursionlimit
-from pandas import DataFrame
 
 def run_collatz(x, tests=1): # run the conjecture in a loop
-
     setrecursionlimit(10000)
     raw_data = []
     export_data = []
+    print(f'Running Collatz Conjecture {tests} time(s) starting with {x}\n')
 
 
     def collatz(x, iterations=0):
         if iterations > 9993: # prevents error when stack is abt to overflow
             print(f'{x} exceeded recursion depth of 10000')
             exit()
-        elif x == 1: # ends the recursion, returns the score (how many steps)
+        elif x == 1 or x == 0: # ends the recursion, returns the score (how many steps)
             raw_data.append(x)
             return iterations
         elif x % 2 == 0: # if even, divide by 2
@@ -29,8 +29,10 @@ def run_collatz(x, tests=1): # run the conjecture in a loop
         raw_data.clear() # refresh for next integer to test
         x += 1 # move to next integer to test
     
-    df = DataFrame(export_data)
-    df.columns = ['Integer', 'Iterations', 'Raw Data']
+    df = pd.DataFrame(export_data, columns=['Integer', 'Iterations', 'Raw Data'])
+    df = df.set_index(['Integer', 'Iterations'])
     return df
-    
-print(run_collatz(7, 3)) # run the test loop
+
+collatz = run_collatz(1, 10)
+print(collatz) # run the test loop
+collatz.to_csv('collatz.csv')
