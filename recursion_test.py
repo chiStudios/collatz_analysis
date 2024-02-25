@@ -13,15 +13,19 @@ def collatz(x, step=0):
         return collatz(3 * x + 1, step + 1)
 
 def run_collatz(x): # run the conjecture in a loop
+    data = []
     from sys import setrecursionlimit
+    from pandas import DataFrame
     setrecursionlimit(10000)
     for i in range(3): # infinite loop to continuously test
         steps, raw = collatz(x) # runs the conjecture recursion function]
         output = [x, steps, raw]
-        print(output)
-        output.clear()
+        data.append([x, steps, raw])
+        output.clear() # TODO figure out how to get it to clear just output and not raw
         raw_data.clear()
         x += 1 # move to next integer to test
+    print(data)
+    # df = DataFrame(output)
         
     
 # print(collatz(10000000))
