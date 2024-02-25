@@ -1,12 +1,12 @@
+from sys import setrecursionlimit
+from pandas import DataFrame
 
 def run_collatz(x, tests=1): # run the conjecture in a loop
 
-    from sys import setrecursionlimit
-    from pandas import DataFrame
     setrecursionlimit(10000)
-
     raw_data = []
     export_data = []
+
 
     def collatz(x, iterations=0):
         if iterations > 9993: # prevents error when stack is abt to overflow
@@ -22,16 +22,15 @@ def run_collatz(x, tests=1): # run the conjecture in a loop
             raw_data.append(x)
             return collatz(3 * x + 1, iterations + 1)
 
+
     for i in range(tests): # test loop
         iterations = collatz(x) # runs the conjecture recursion function
         export_data.append([x, iterations, raw_data.copy()])
         raw_data.clear() # refresh for next integer to test
         x += 1 # move to next integer to test
     
-    # print('export data:', export_data)
     df = DataFrame(export_data)
-    print(df)
-    # print(df[2][0])
-        
+    df.columns = ['Integer', 'Iterations', 'Raw Data']
+    return df.drop()
     
-run_collatz(20, 10) # run the test loop
+print(run_collatz(7, 3)) # run the test loop
