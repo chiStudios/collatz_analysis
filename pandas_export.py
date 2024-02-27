@@ -28,11 +28,36 @@ def run_collatz(x, tests=1): # run the conjecture in a loop
         export_data.append([x, iterations, raw_data.copy()])
         raw_data.clear() # refresh for next integer to test
         x += 1 # move to next integer to test
-    
+        
     df = pd.DataFrame(export_data, columns=['Integer', 'Iterations', 'Raw Data'])
-    df = df.set_index(['Integer', 'Iterations'])
+    # df.set_index('Integer', inplace=True)
     return df
 
-collatz = run_collatz(1, 10)
-print(collatz) # run the test loop
-collatz.to_csv('collatz.csv')
+def test_loop():
+    # run the test loop
+    collatz = run_collatz(0, 100000).sort_values('Iterations', ascending=True)
+    integer_last_value = []
+    last_val_freq = {}
+    
+    for item in collatz['Integer']:
+        item = str(item)[-1]
+        print(item, end='')
+        print()
+        integer_last_value.append(item)
+        if item in last_val_freq:
+            last_val_freq[item] += 1
+        else:
+            last_val_freq[item] = 1
+    
+    # df_ilv = pd.DataFrame(integer_last_value, columns=['Last Value']).set_index('Last Value')
+    # df_ilv.to_csv('integer_last_value.csv')
+
+    # print(collatz)
+    # collatz.to_csv('collatz.csv')
+
+    return last_val_freq
+
+    
+
+print(test_loop())
+
