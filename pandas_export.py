@@ -23,47 +23,21 @@ def run_collatz(x, tests=1): # run the conjecture in a loop
             return collatz(3 * x + 1, iterations + 1)
 
 
-    for i in range(tests): # test loop
+    for i in range(tests): # conjecture loop
         iterations = collatz(x) # runs the conjecture recursion function
         export_data.append([x, iterations, raw_data.copy()])
         raw_data.clear() # refresh for next integer to test
         x += 1 # move to next integer to test
         
     df = pd.DataFrame(export_data, columns=['Integer', 'Iterations', 'Raw Data'])
-    # df['Index']=df['Integer']
-    # df.set_index('Index', drop=True, inplace=True)
     return df
 
-# def last_integer(collatz):
-#     # integer_last_value = []
-#     # last_val_freq = {}
-    
-#     # for item in collatz['Integer']:
-#     return str(item)[-1]
-#         # print(item, end='')
-#         # print()
-#         # integer_last_value.append(item)
-#         # if item in last_val_freq:
-#         #     last_val_freq[item] += 1
-#         # else:
-#         #     last_val_freq[item] = 1
-    
-    # return integer_last_value
-
-    # df_ilv = pd.DataFrame(integer_last_value, columns=['Last Value']).set_index('Last Value')
-    # df_ilv.to_csv('integer_last_value.csv')
-
-def test_loop():
-    # run the test loop
+def test():
     collatz = run_collatz(0, 100000).sort_values('Integer', ascending=True)
     collatz['OnesPlace'] = collatz.Integer.apply(lambda x: str(x)[-1])
     collatz = collatz.sort_values('OnesPlace', ascending=True)
-
-
     collatz.to_csv('collatz.csv', index=False)
     return collatz
-    # return last_val_freq
 
 
-print(test_loop())
-
+print(test())
