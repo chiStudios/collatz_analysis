@@ -30,34 +30,40 @@ def run_collatz(x, tests=1): # run the conjecture in a loop
         x += 1 # move to next integer to test
         
     df = pd.DataFrame(export_data, columns=['Integer', 'Iterations', 'Raw Data'])
-    # df.set_index('Integer', inplace=True)
+    # df['Index']=df['Integer']
+    # df.set_index('Index', drop=True, inplace=True)
     return df
 
-def test_loop():
-    # run the test loop
-    collatz = run_collatz(0, 100000).sort_values('Iterations', ascending=True)
-    integer_last_value = []
-    last_val_freq = {}
+# def last_integer(collatz):
+#     # integer_last_value = []
+#     # last_val_freq = {}
     
-    for item in collatz['Integer']:
-        item = str(item)[-1]
-        print(item, end='')
-        print()
-        integer_last_value.append(item)
-        if item in last_val_freq:
-            last_val_freq[item] += 1
-        else:
-            last_val_freq[item] = 1
+#     # for item in collatz['Integer']:
+#     return str(item)[-1]
+#         # print(item, end='')
+#         # print()
+#         # integer_last_value.append(item)
+#         # if item in last_val_freq:
+#         #     last_val_freq[item] += 1
+#         # else:
+#         #     last_val_freq[item] = 1
     
+    # return integer_last_value
+
     # df_ilv = pd.DataFrame(integer_last_value, columns=['Last Value']).set_index('Last Value')
     # df_ilv.to_csv('integer_last_value.csv')
 
-    # print(collatz)
-    # collatz.to_csv('collatz.csv')
+def test_loop():
+    # run the test loop
+    collatz = run_collatz(0, 100000).sort_values('Integer', ascending=True)
+    collatz['OnesPlace'] = collatz.Integer.apply(lambda x: str(x)[-1])
+    collatz = collatz.sort_values('OnesPlace', ascending=True)
 
-    return last_val_freq
 
-    
+    collatz.to_csv('collatz.csv', index=False)
+    return collatz
+    # return last_val_freq
+
 
 print(test_loop())
 
